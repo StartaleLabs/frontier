@@ -30,7 +30,7 @@ impl<K: Eq + core::hash::Hash, V: Encode> LRUCacheByteLimited<K, V> {
 	pub fn new(
 		cache_name: &'static str,
 		max_size: u64,
-		prometheus_registry: Option<prometheus_endpoint::Registry>,
+		prometheus_registry: Option<substrate_prometheus_endpoint::Registry>,
 	) -> Self {
 		let metrics = match prometheus_registry {
 			Some(registry) => match LRUCacheByteLimitedMetrics::register(cache_name, &registry) {
@@ -90,31 +90,31 @@ impl<K: Eq + core::hash::Hash, V: Encode> LRUCacheByteLimited<K, V> {
 struct LRUCacheByteLimitedMetrics {
 	hits: prometheus::IntCounter,
 	miss: prometheus::IntCounter,
-	size: prometheus_endpoint::Gauge<prometheus_endpoint::U64>,
+	size: substrate_prometheus_endpoint::Gauge<substrate_prometheus_endpoint::U64>,
 }
 
 impl LRUCacheByteLimitedMetrics {
 	pub(crate) fn register(
 		cache_name: &'static str,
-		registry: &prometheus_endpoint::Registry,
-	) -> std::result::Result<Self, prometheus_endpoint::PrometheusError> {
+		registry: &substrate_prometheus_endpoint::Registry,
+	) -> std::result::Result<Self, substrate_prometheus_endpoint::PrometheusError> {
 		Ok(Self {
-			hits: prometheus_endpoint::register(
+			hits: substrate_prometheus_endpoint::register(
 				prometheus::IntCounter::new(
 					format!("frontier_eth_{}_hits", cache_name),
 					format!("Hits of eth {} cache.", cache_name),
 				)?,
 				registry,
 			)?,
-			miss: prometheus_endpoint::register(
+			miss: substrate_prometheus_endpoint::register(
 				prometheus::IntCounter::new(
 					format!("frontier_eth_{}_miss", cache_name),
 					format!("Misses of eth {} cache.", cache_name),
 				)?,
 				registry,
 			)?,
-			size: prometheus_endpoint::register(
-				prometheus_endpoint::Gauge::new(
+			size: substrate_prometheus_endpoint::register(
+				substrate_prometheus_endpoint::Gauge::new(
 					format!("frontier_eth_{}_size", cache_name),
 					format!("Size of eth {} data cache.", cache_name),
 				)?,

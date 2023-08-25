@@ -28,7 +28,7 @@ use sc_transaction_pool::ChainApi;
 use sp_api::{ApiExt, CallApiAt, CallApiAtParams, ProvideRuntimeApi, StorageTransactionCache};
 use sp_block_builder::BlockBuilder as BlockBuilderApi;
 use sp_blockchain::HeaderBackend;
-use sp_core::ExecutionContext;
+use sp_core::traits::CallContext;
 use sp_io::hashing::{blake2_128, twox_128};
 use sp_runtime::{traits::Block as BlockT, DispatchError, SaturatedConversion};
 use sp_state_machine::OverlayedChanges;
@@ -243,8 +243,9 @@ where
 						arguments: encoded_params,
 						overlayed_changes: &RefCell::new(overlayed_changes),
 						storage_transaction_cache: &storage_transaction_cache,
-						context: ExecutionContext::OffchainCall(None),
+						call_context: CallContext::Offchain,
 						recorder: &None,
+						extensions: &Default::default(),
 					};
 
 					let value = if api_version == 4 {

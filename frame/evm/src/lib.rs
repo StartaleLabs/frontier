@@ -84,7 +84,7 @@ use frame_support::{
 	},
 	weights::Weight,
 };
-use frame_system::RawOrigin;
+use frame_system::{pallet_prelude::BlockNumberFor, RawOrigin};
 use sp_core::{Decode, Encode, Hasher, H160, H256, U256};
 use sp_runtime::{
 	traits::{BadOrigin, Saturating, UniqueSaturatedInto, Zero},
@@ -512,13 +512,14 @@ pub mod pallet {
 	}
 
 	#[pallet::genesis_config]
-	#[derive(Default)]
-	pub struct GenesisConfig {
+	#[derive(frame_support::DefaultNoBound)]
+	pub struct GenesisConfig<T> {
 		pub accounts: BTreeMap<H160, GenesisAccount>,
+		pub _phantom: sp_std::marker::PhantomData<T>,
 	}
 
 	#[pallet::genesis_build]
-	impl<T: Config> GenesisBuild<T> for GenesisConfig
+	impl<T: Config> BuildGenesisConfig for GenesisConfig<T>
 	where
 		U256: UniqueSaturatedInto<BalanceOf<T>>,
 	{
@@ -733,7 +734,7 @@ pub trait BlockHashMapping {
 pub struct SubstrateBlockHashMapping<T>(sp_std::marker::PhantomData<T>);
 impl<T: Config> BlockHashMapping for SubstrateBlockHashMapping<T> {
 	fn block_hash(number: u32) -> H256 {
-		let number = T::BlockNumber::from(number);
+		let number: BlockNumberFor<T> = number.into();
 		H256::from_slice(frame_system::Pallet::<T>::block_hash(number).as_ref())
 	}
 }

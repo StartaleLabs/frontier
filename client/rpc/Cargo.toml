@@ -28,7 +28,7 @@ serde = { workspace = true }
 tokio = { workspace = true, features = ["sync"] }
 
 # Substrate
-prometheus-endpoint = { workspace = true }
+substrate-prometheus-endpoint = { workspace = true }
 sc-client-api = { workspace = true }
 sc-network = { workspace = true }
 sc-network-common = { workspace = true }
@@ -64,7 +64,7 @@ tempfile = "3.3.0"
 sc-block-builder = { workspace = true }
 sc-client-db = { workspace = true, features = ["rocksdb"] }
 sp-consensus = { workspace = true }
-substrate-test-runtime-client = { workspace = true }
+#substrate-test-runtime-client = { workspace = true }
 
 [features]
 default = ["rocksdb"]

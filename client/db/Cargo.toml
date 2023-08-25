@@ -44,7 +44,7 @@ tempfile = "3.3.0"
 # Substrate
 sc-block-builder = { workspace = true }
 sp-consensus = { workspace = true }
-substrate-test-runtime-client = { workspace = true }
+#substrate-test-runtime-client = { workspace = true }
 
 [features]
 default = ["rocksdb"]
