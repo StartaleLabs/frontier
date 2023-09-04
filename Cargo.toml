@@ -88,7 +88,7 @@ sc-transaction-pool = "22.0.0"
 sc-transaction-pool-api = "22.0.0"
 sc-utils = "8.0.0"
 # Substrate Primitive
-sp-api = "20.0.0" 
+sp-api = { version = "20.0.0", default-features = false } 
 sp-block-builder = { version = "20.0.0", default-features = false }
 sp-blockchain = "22.0.0"
 sp-consensus = "0.26.0" 
